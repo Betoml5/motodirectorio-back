@@ -15,7 +15,10 @@ const Worker = new mongoose.Schema({
     type: String,
     required: true,
   },
-  status: Boolean,
+  status: {
+    type: Boolean,
+    default: false,
+  },
   rating: {
     Number,
     default: 0,
@@ -26,7 +29,7 @@ const Worker = new mongoose.Schema({
   },
   phone: {
     type: String,
-    default: "",
+    required: true,
   },
 });
 

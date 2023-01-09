@@ -24,6 +24,7 @@ const error = (req, res, message, status, details) => {
   res.status(status || 500).send({
     error: message,
     body: "",
+    details,
   });
 };
 
