@@ -1,5 +1,11 @@
 const router = require("express").Router();
 const controller = require("../controllers/Auth");
-router.post("/", controller.login);
+const { body } = require("express-validator");
+router.post(
+  "/",
+  body("phone").isLength({ min: 8 }),
+  body("password").isAlphanumeric(),
+  controller.login
+);
 
 module.exports = router;

@@ -10,10 +10,10 @@ const { config } = require("../config");
 passport.use(
   "login",
   new localStrategy(
-    { usernameField: "controlNumber", passwordField: "password" },
-    async (controlNumber, password, done) => {
+    { usernameField: "phone", passwordField: "password" },
+    async (phone, password, done) => {
       try {
-        const worker = await Worker.findOne({ controlNumber });
+        const worker = await Worker.findOne({ phone });
 
         if (!worker) return done(null, false, { message: "Worker not found" });
 

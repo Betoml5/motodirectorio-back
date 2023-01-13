@@ -1,16 +1,13 @@
 const controller = require("../controllers/Worker");
 const router = require("express").Router();
-const { body, validationResult } = require("express-validator");
+const { createWorker } = require("../middlewares/validator");
 
 router.get("/", controller.get);
-router.get("/:id", controller.getOne);
-router.post(
-  "/",
-  body("worker.name").isString(),
-  body("worker.lastName").isString(),
-  body("worker.password").isAlphanumeric(),
-  body("worker.phone").isString(),
-  controller.create
-);
+router.get("/worker/:id", controller.getOne);
+router.get("/filter", controller.getWorkersByQuery);
+router.post("/", createWorker, controller.create);
+router.put("/:id", controller.update);
+router.delete("/:id", controller.delete);
+router.delete("/", controller.deleteAll);
 
 module.exports = router;

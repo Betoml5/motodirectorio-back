@@ -2,29 +2,31 @@ const passport = require("passport");
 const responseHTTP = require("../network/response");
 const jwt = require("jsonwebtoken");
 const { config } = require("../config");
-
+const { validationResult } = require("express-validator");
 const controller = {
   login: async (req, res, next) => {
-    passport.authenticate("login", async (err, user, info) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return responseHTTP.error(req, res, { errors: errors.array() }, 422);
+    }
+
+    passport.authenticate("login", async (err, worker, info) => {
       try {
-        if (err | !user)
+        if (err | !worker)
           return responseHTTP.error(
             req,
             res,
             {
-              message: "Password or number control wrong",
+              message: "Password or phone number wrong",
             },
             403
           );
 
-        req.login(user, { session: false }, async (err) => {
+        req.login(worker, { session: false }, async (err) => {
           if (err) next(err);
 
-          const payload = { user };
-          const token = jwt.sign(
-            { id: user._id, roles: [req.user.role] },
-            config.authJwtSecret
-          );
+          const payload = { worker };
+          const token = jwt.sign({ id: worker._id }, config.authJwtSecret);
 
           return responseHTTP.success(req, res, { token, payload }, 200);
         });
