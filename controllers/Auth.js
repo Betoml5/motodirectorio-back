@@ -26,7 +26,10 @@ const controller = {
           if (err) next(err);
 
           const payload = { worker };
-          const token = jwt.sign({ id: worker._id }, config.authJwtSecret);
+          const token = jwt.sign(
+            { id: worker._id, roles: [worker.roles] },
+            config.authJwtSecret
+          );
 
           return responseHTTP.success(req, res, { token, payload }, 200);
         });

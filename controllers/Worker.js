@@ -29,8 +29,16 @@ const controller = {
   getWorkersByQuery: async (req, res) => {
     const { query, value } = req.query;
 
+    if (!query || !value) {
+      const workers = await Worker.find({}).sort({ status: -1 });
+      return responseHTTP.success(req, res, workers, 200);
+    }
+
     try {
-      const workers = await Worker.find({}).where(query).equals(value);
+      const workers = await Worker.find({})
+        .where(query)
+        .equals(value)
+        .sort({ status: -1 });
 
       if (!workers) {
         return responseHTTP.error(req, res, "No workers found", 404);
@@ -93,6 +101,17 @@ const controller = {
         { new: true }
       );
       return responseHTTP.success(req, res, updatedWorker, 200);
+    } catch (error) {
+      return responseHTTP.error(req, res, "Internal error", 500, error);
+    }
+  },
+  updateWorkers: async (req, res) => {
+    try {
+      const { workers } = req.body;
+      const updatedWorkers = await Worker.updateMany({}, workers, {
+        new: true,
+      });
+      return responseHTTP.success(req, res, updatedWorkers, 200);
     } catch (error) {
       return responseHTTP.error(req, res, "Internal error", 500, error);
     }

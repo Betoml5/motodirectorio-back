@@ -64,30 +64,9 @@ Worker.pre("save", async function (next) {
   }
 });
 
-Worker.pre("findOneAndUpdate", async function (next) {
-  try {
-    if (this._update.password) {
-      const hashed = await bcrypt.hash(this._update.password, SALT_WORK_FACTOR);
-      this._update.password = hashed;
-    }
-    next();
-  } catch (err) {
-    return next(err);
-  }
-});
-
 Worker.validatePassword = async function validatePassword(password) {
   return bcrypt.compare(password, this.password);
 };
-
-Worker.static(
-  "findOneOrCreate",
-  async function findOneOrCreate(condition, doc) {
-    const one = await this.findOne(condition);
-
-    return one || this.create(doc);
-  }
-);
 
 //pre-save
 module.exports = mongoose.model("Worker", Worker);
