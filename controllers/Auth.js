@@ -28,7 +28,10 @@ const controller = {
           const payload = { worker };
           const token = jwt.sign(
             { id: worker._id, roles: [worker.roles] },
-            config.authJwtSecret
+            config.authJwtSecret,
+            {
+              expiresIn: "60d",
+            }
           );
 
           return responseHTTP.success(req, res, { token, payload }, 200);
