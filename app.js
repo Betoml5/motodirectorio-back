@@ -6,7 +6,6 @@ const passport = require("passport");
 const cors = require("cors");
 
 mongoose.set("strictQuery", false);
-connectDB();
 
 app.use(express.json());
 app.use(cors("*"));
