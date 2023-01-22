@@ -137,6 +137,7 @@ const controller = {
   updateWorkers: async (req, res) => {
     try {
       const { workers } = req.body;
+
       const updatedWorkers = await Worker.updateMany({}, workers, {
         new: true,
       });

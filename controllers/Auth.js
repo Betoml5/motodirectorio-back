@@ -30,7 +30,7 @@ const controller = {
             { id: worker._id, roles: [worker.roles] },
             config.authJwtSecret,
             {
-              expiresIn: "60d",
+              expiresIn: "15s",
             }
           );
 
